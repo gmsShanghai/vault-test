@@ -1,0 +1,130 @@
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <!-- Optimal rendering on mobile devices. -->
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css"
+        />
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+    </head>
+    <body>
+        <div class="ui container">
+            <!-- 第一部分1.Setup token for card  -->
+            <div class="ui container segment">
+                <button class="ui button blue" id="setup_token_for_card_btn">
+                    1.Setup token for card
+                </button>
+                <div class="ui input labeled">
+                    <div class="ui label">
+                        Setup token
+                      </div>
+                    <input type="text" placeholder="setup_token_id" id="setup_token_id">
+                  </div>
+                  <div class="ui input labeled">
+                    <div class="ui label">
+                        Customer id
+                      </div>
+                    <input type="text" placeholder="customer id" id="customer_id">
+                  </div>
+                  <button class="ui button green" id="setup_token_for_paypal_btn">
+                    Vault PayPal instead of card
+                </button>
+                <div class="ui grid" style="margin-top: 24px;">
+                    <TextArea
+                        placeholder="Request body"
+                        style="min-height: 200"
+                        class="eight wide column"
+                        id="setup_token_for_card_requestBody"
+                    ></TextArea>
+                    <TextArea
+                        placeholder="Response body"
+                        style="min-height: 200"
+                        class="eight wide column"
+                        id="setup_token_for_card_responseBody"
+                    ></TextArea>
+                </div>
+           <a class="ui tag red label" style="margin-top: 36px;">
+            When you use PayPal to Vault, Approve this order/agreement Before you go to Step 2
+           </a>
+        </div>
+         <!-- 第二部分 2.Create payment token  -->
+         <div class="ui container segment">
+            <button class="ui button blue" id="create_payment_token_btn">
+                2.Create payment token
+            </button>
+            <div class="ui input labeled">
+                <div class="ui label">
+                    Vault Id
+                  </div>
+                <input type="text" placeholder="Vault Id" id="vault_id_display">
+              </div>
+            
+            <div class="ui grid" style="margin-top: 24px;">
+                <TextArea
+                    placeholder="Request body"
+                    style="min-height: 200"
+                    class="eight wide column"
+                    id="create_payment_token_requestBody"
+                ></TextArea>
+                <TextArea
+                    placeholder="Response body"
+                    style="min-height: 200"
+                    class="eight wide column"
+                    id="create_payment_token_responseBody"
+                ></TextArea>
+            </div>
+        </div>
+
+        <!-- 第三部分 3.Use saved payment token to Pay  -->
+        <div class="ui container segment">
+            <div  class="ui dimmer" id="loader_dimmer_3">
+                <div class="ui disabled loader" id="loader_3"></div>
+            </div>
+            <button class="ui button blue" id="make_payment_btn">
+                3.Use saved payment token to Pay
+            </button>
+            
+            
+            <div class="ui grid" style="margin-top: 24px;">
+                <TextArea
+                    placeholder="Request body"
+                    style="min-height: 200"
+                    class="eight wide column"
+                    id="make_payment_requestBody"
+                ></TextArea>
+                <TextArea
+                    placeholder="Response body"
+                    style="min-height: 200"
+                    class="eight wide column"
+                    id="make_payment_responseBody"
+                ></TextArea>
+            </div>
+        </div>
+
+         <!-- 第四部分 4. Retrieve a payer's payment method token  -->
+         <div class="ui container segment">
+            <button class="ui button blue" id="retrieve_vault_id_btn">
+                4. Retrieve a payer's payment method token
+            </button>
+            
+            <p>
+                https://api-m.sandbox.paypal.com/v3/vault/payment-tokens?customer_id= <input type="text" placeholder="customer id" id="customer_id_retrieve">
+            </p>
+            <div class="ui grid" style="margin-top: 24px;">                
+                <TextArea
+                    placeholder="Response body"
+                    style="min-height: 200"
+                    class=" wide "
+                    id="retrieve_vault_id_responseBody"
+                ></TextArea>
+            </div>
+        </div>
+        <p id="result-message" class="ui container"></p>
+        <script type="module" src="checkout_API.js"></script>
+    </body>
+</html>

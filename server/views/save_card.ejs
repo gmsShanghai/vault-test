@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <title>Vault[Save Card]</title>
+
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css"
+        />
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+    </head>
+    <body>
+        <br />
+        <div class="ui container">
+            <%- include('vault_common_part', { clientId, clientToken,
+            PAYPAL_TEST_CARD_NO, PAYPAL_TEST_CARD_DATE, PAYPAL_TEST_CARD_CVV,
+            VAULT_MODEL, id_token, CUSTOMER_ID, VAULT_ID, TEST_MERCHANT_ID,
+            is_use_PAYPAL_AUTH_ASSERTION, IS_VAULT_OPTION_DISPLAY:false
+            ,HAS_ORDER_AMOUNT_PART:false }) %>
+            <br />
+
+            <!-- <%- include('./miniPart/result_area')%>  -->
+
+            <%- include('./miniPart/card_copy_paste_info_part')%>
+
+            <div class="ui container segment" style="background-color: gray">
+               
+                <%- include('./miniPart/ACDC_card_render_area_part.ejs')%>
+                <br />
+                <button
+                    id="multi-card-field-button"
+                    type="button"
+                    class="ui primary button"
+                >
+                    Save Card Information
+                </button>
+            </div>
+        </div>
+
+        <script type="module" src="save_card.js"></script>
+
+        <!-- 这里不能有data-user-id-token! 有了会失败 -->
+
+        <% if (eval(is_use_PAYPAL_AUTH_ASSERTION)) { %>
+        <!-- 3rd Party -->
+        <script
+            crossorigin="anonymous"
+            src="https://www.paypal.com/sdk/js?client-id=<%= clientId %>&components=card-fields&buyer-country=US&merchant-id=CMHAMMNAXCMGA"
+          
+            type="text/javascript"
+        ></script>
+        <% } %> <% if (!eval(is_use_PAYPAL_AUTH_ASSERTION)) { %>
+        <!-- 1st Party -->
+        <script
+            crossorigin="anonymous"
+            src="https://www.paypal.com/sdk/js?client-id=<%= clientId %>&components=card-fields&buyer-country=US"
+           
+            type="text/javascript"
+        ></script>
+        <% } %>
+
+
+        <div class="ui container segment">
+            Result Area:
+            <p id="result_area"></p>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,174 @@
+<div class="ui container segment">
+    <div class="ui attached menu">
+        <div class="item">
+            <button class="ui button green" id="PAYPAL_TEST_CARD_NO_btn">
+                Copy
+            </button>
+        </div>
+        <div
+            class="ui container"
+            style="margin-top: auto; margin-bottom: auto; padding-left: 12px"
+        >
+            Card Number:
+            <span id="PAYPAL_TEST_CARD_NO"><%= PAYPAL_TEST_CARD_NO %></span>
+        </div>
+    </div>
+    <div class="ui attached menu">
+        <div class="item">
+            <button class="ui button green" id="PAYPAL_TEST_CARD_DATE_btn">
+                Copy
+            </button>
+        </div>
+        <div style="margin-top: auto; margin-bottom: auto; padding-left: 12px">
+            Expiration Date:
+            <span id="PAYPAL_TEST_CARD_DATE"><%= PAYPAL_TEST_CARD_DATE %></span>
+        </div>
+    </div>
+    <div class="ui attached menu">
+        <div class="item">
+            <button class="ui button green" id="PAYPAL_TEST_CARD_CVV_btn">
+                Copy
+            </button>
+        </div>
+        <div style="margin-top: auto; margin-bottom: auto; padding-left: 12px">
+            CVV(This value won't matter in Sandbox Test):
+            <span id="PAYPAL_TEST_CARD_CVV"><%= PAYPAL_TEST_CARD_CVV %></span>
+        </div>
+    </div>
+</div>
+<script>
+    // ##############################################
+    //复制到剪贴板 内容相关 --- Start
+
+    // authentication 成功
+
+    // const authentication = () => {
+    //     if ("clipboard" in navigator) {
+    //         return new Promise((resolve, reject) => {
+    //             navigator.permissions.query({ name: "clipboard-read" }).then(
+    //                 (result) => {
+    //                     if (result.state == "granted" || result.state == "prompt") {
+    //                         resolve(true);
+    //                     } else {
+    //                         resolve(false);
+    //                     }
+    //                 },
+    //                 (error) => {
+    //                     reject(error);
+    //                 }
+    //             );
+    //         });
+    //     } else {
+    //         alert("该浏览器暂不支持,请使用最新版本的GoogleChrome浏览");
+    //         return Promise.resolve(false);
+    //     }
+    // };
+
+    // function copyCardNumber() {
+    //     let content = document.getElementById("PAYPAL_TEST_CARD_NO");
+    //     let value = content.innerHTML;
+    //     authentication().then(() => {
+    //         navigator.clipboard.writeText(value).then(
+    //             () => {
+    //                 console.log("粘贴文本成功");
+    //             },
+    //             () => {
+    //                 console.log("clipboard write failed");
+    //             }
+    //         );
+    //     });
+    // }
+
+    // function copyExpireDate() {
+    //     let content = document.getElementById("PAYPAL_TEST_CARD_DATE");
+    //     let value = content.innerHTML;
+    //     authentication().then(() => {
+    //         navigator.clipboard.writeText(value).then(
+    //             () => {
+    //                 console.log("粘贴文本成功");
+    //             },
+    //             () => {
+    //                 console.log("clipboard write failed");
+    //             }
+    //         );
+    //     });
+    // }
+
+    // function copyCVV() {
+    //     let content = document.getElementById("PAYPAL_TEST_CARD_CVV");
+    //     let value = content.innerHTML;
+    //     authentication().then(() => {
+    //         navigator.clipboard.writeText(value).then(
+    //             () => {
+    //                 console.log("粘贴文本成功");
+    //             },
+    //             () => {
+    //                 console.log("clipboard write failed");
+    //             }
+    //         );
+    //     });
+    // }
+
+    //复制到剪贴板 内容相关 --- End
+    // ##############################################
+
+    // 如果auth失败, 则不走auth
+
+    async function copyCardNumber() {
+        let content = document.getElementById("PAYPAL_TEST_CARD_NO");
+        let value = content.innerHTML;
+        try {
+            await navigator.clipboard.writeText(value);
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
+    async function copyExpireDate() {
+        let content = document.getElementById("PAYPAL_TEST_CARD_DATE");
+        let value = content.innerHTML;
+        try {
+            await navigator.clipboard.writeText(value);
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
+    async function copyCVV() {
+        let content = document.getElementById("PAYPAL_TEST_CARD_CVV");
+        let value = content.innerHTML;
+        try {
+            await navigator.clipboard.writeText(value);
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
+    function addCopyListener() {
+        console.log("添加复制按钮点击函数...");
+        document
+            .getElementById("PAYPAL_TEST_CARD_NO_btn")
+            .addEventListener("click", copyCardNumber);
+        document
+            .getElementById("PAYPAL_TEST_CARD_DATE_btn")
+            .addEventListener("click", copyExpireDate);
+        document
+            .getElementById("PAYPAL_TEST_CARD_CVV_btn")
+            .addEventListener("click", copyCVV);
+    }
+
+    function addCopyListener() {
+        console.log("添加复制按钮点击函数...");
+        document
+            .getElementById("PAYPAL_TEST_CARD_NO_btn")
+            .addEventListener("click", copyCardNumber);
+        document
+            .getElementById("PAYPAL_TEST_CARD_DATE_btn")
+            .addEventListener("click", copyExpireDate);
+        document
+            .getElementById("PAYPAL_TEST_CARD_CVV_btn")
+            .addEventListener("click", copyCVV);
+    }
+
+    addCopyListener();
+</script>

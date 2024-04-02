@@ -1,0 +1,175 @@
+<div>
+    <div class="ui top attached menu">
+        <% if(is_use_PAYPAL_AUTH_ASSERTION){ %>
+        <div class="ui blue big horizontal label">
+            This is a 3rd party model and will use a PayPal Auth Assertion in
+            request head. Money will be transferred to Merchant Account
+        </div>
+        <% }else {%>
+        <div class="ui orange big horizontal label">
+            This is a 1st party model and has no PayPal Auth Assertion in
+            request head. A Merchant Client will be used.
+        </div>
+        <% } %>
+    </div>
+    <div class="ui attached segment">
+        <div>ClientID: <input type="text" style="width: 100%;" value="<%= clientId %>" disabled="true"></input></div>
+    </div>
+    <div class="ui attached menu">
+        <div class="item">
+            <div class="ui red big horizontal label">customer_id</div>
+        </div>
+        <div class="ui big container" style="padding-top: 1rem">
+            <% if(VAULT_MODEL === "firstTime"){ %>
+            <div>First Time Using PayPal/ACDC:</div>
+            <% }else if(VAULT_MODEL === "returning"){%>
+            <div>A returned customer:</div>
+            <% } %>
+            <div>
+                <input
+                    id="CUSTOMER_ID"
+                    value="<%= CUSTOMER_ID %>"
+                    type="text"
+                    placeholder="Customer Id here"
+                />
+                <p id="CUSTOMER_ID_INSTRUCTION_WORD"></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="ui attached segment">
+        买家第一次进入时没有customerID(除非ACDC的场景下, 可以指定customerID), 在完成vault流程后PayPal会分配一个自动的customerID
+        <br/>
+        In first time buyer case, customer id is generate by PayPal after
+        first Capture (Unless in Card Pay where customerID can be nominated).After testing, one PayPal buyer acct is related to one Vault Id.
+
+    </div>
+
+    <% if(IS_VAULT_OPTION_DISPLAY){ %>
+    <div class="ui segment container">
+        <div class="ui checkbox">
+            <input type="checkbox" id="use_vault_checkbox" />
+            <label
+                >Use Vault ID to Pay. If you would like to use vault_id when
+                creating an Order, Please check the checkbox and input vault_id
+                below</label
+            >
+        </div>
+        <br />
+        <div class="ui input">
+            <input
+                type="text"
+                placeholder="vault_id here"
+                style="margin-top: 8px"
+                id="vault_id_input"
+            />
+        </div>
+    </div>
+
+    <% } %>
+
+    
+    <% if (HAS_ORDER_AMOUNT_PART) { %>
+        <!-- <%= HAS_ORDER_AMOUNT_PART %> -->
+        <%- include('./miniPart/order_amount') %>
+    <% } %>
+
+    
+
+    <div
+        id="VAULT_INFO"
+        VAULT_ID="<%= VAULT_ID %>"
+        VAULT_MODEL="<%= VAULT_MODEL %>"
+        CUSTOMER_ID="<%= CUSTOMER_ID %>"
+        TEST_MERCHANT_ID="<%= TEST_MERCHANT_ID %>"
+    ></div>
+</div>
+
+<script type="text/javascript">
+    const getQuery = (url) => {
+        // str为？之后的参数部分字符串
+        const str = url.substr(url.indexOf("?") + 1);
+        // arr每个元素都是完整的参数键值
+        const arr = str.split("&");
+        // result为存储参数键值的集合
+        const result = {};
+        for (let i = 0; i < arr.length; i++) {
+            // item的两个元素分别为参数名和参数值
+            const item = arr[i].split("=");
+            result[item[0]] = item[1];
+        }
+        return result;
+    };
+
+    (async function () {
+        const param = getQuery(location.href);
+        const response = await fetch(
+            `vault_common_part_init?model=${param.model}&is_use_PAYPAL_AUTH_ASSERTION=${param.is_use_PAYPAL_AUTH_ASSERTION}`,
+            {
+                method: "GET",
+            }
+        );
+        const responseObject = await response.json();
+        const useVaultCheckBox = document.getElementById("use_vault_checkbox");
+        const vaultIDInputBox = document.getElementById("vault_id_input");
+        
+        // debugger;
+        const VAULT_ID = responseObject.VAULT_ID;
+        const VAULT_MODEL = responseObject.VAULT_MODEL;
+
+
+        const CUSTOMER_ID_VALUE = responseObject.CUSTOMER_ID;
+        const CUSTOMER_ID_INPUT = document.getElementById("CUSTOMER_ID");
+        // if (VAULT_MODEL === "firstTime") {
+        //     useVaultCheckBox.checked = false;
+        //     vaultIDInputBox.value = "";
+        // }
+        if (VAULT_MODEL === "returning") {
+            vaultIDInputBox.value = VAULT_ID;
+            useVaultCheckBox.checked = true;
+            CUSTOMER_ID_INPUT.value = CUSTOMER_ID_VALUE
+        }
+
+       
+        //----------
+        const CUSTOMER_ID_INSTRUCTION_WORD =  document.getElementById("CUSTOMER_ID_INSTRUCTION_WORD");
+        CUSTOMER_ID_INSTRUCTION_WORD
+        if (VAULT_MODEL === "firstTime") {
+
+            CUSTOMER_ID_INSTRUCTION_WORD.innerHTML  = "First time buyer, no Customer ID";
+            CUSTOMER_ID_INPUT.disabled = true;
+            CUSTOMER_ID_INPUT.value = "";
+        }
+        // debugger;
+        if (VAULT_MODEL === "firstTime" && param.route === "checkout_ACDC") {
+            CUSTOMER_ID_INSTRUCTION_WORD.innerHTML  =
+                "Put your own custom ID here or leave it blank and let PayPal generate it for you";
+            CUSTOMER_ID_INPUT.disabled = false;
+            CUSTOMER_ID_INPUT.value = "";
+        }
+    })();
+
+    // const VAULT_ID = document
+    //     .getElementById("VAULT_INFO")
+    //     .getAttribute("VAULT_ID");
+    // const VAULT_MODEL = document
+    //     .getElementById("VAULT_INFO")
+    //     .getAttribute("VAULT_MODEL");
+    // let url = window.location.href;
+    // url = url.substring(0, url.lastIndexOf("/"));
+
+    // // const vault_info_object = await fetch(`${url}/card_vault_info`).then(data=>data.json());
+
+    // if (VAULT_MODEL === "firstTime") {
+    //     useVaultCheckBox.checked = false;
+    //     vaultIDInputBox.value = "";
+    // }
+    // if (VAULT_MODEL === "returning") {
+    //     vaultIDInputBox.value = VAULT_ID;
+    //     useVaultCheckBox.checked = true;
+    // }
+
+    // const amount_input = document.getElementById("amount_input");
+    // let amount = 100 + Math.floor(Math.random() * 100);
+    // amount_input.value = amount;
+</script>

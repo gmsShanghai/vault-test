@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <title>ACDC Vault Testing</title>
+
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css"
+        />
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+    </head>
+    <body>
+        <br />
+
+        <div class="ui container">
+            <%- include('vault_common_part', { clientId, clientToken,
+            PAYPAL_TEST_CARD_NO, PAYPAL_TEST_CARD_DATE, PAYPAL_TEST_CARD_CVV,
+            VAULT_MODEL, id_token, CUSTOMER_ID, VAULT_ID, TEST_MERCHANT_ID,
+            is_use_PAYPAL_AUTH_ASSERTION, IS_VAULT_OPTION_DISPLAY:false,HAS_ORDER_AMOUNT_PART:true }) %>
+
+            <div class="ui container segment">
+                Notice: If Card and Button are both rendered in JS-SDK
+                script, only PayPal button will be rendered
+            </div>
+            <%- include('./miniPart/card_copy_paste_info_part')%>
+
+            <div class="ui container segment" style="background-color: gray;">
+                <%- include('spb_display_area')%>
+                <%- include('./miniPart/ACDC_card_render_area_part.ejs')%>
+                
+            </div>
+
+            <div class="ui bottom attached segment">
+                <div class="ui checkbox">
+                    <input type="checkbox" id="save_2_vault" name="save_2_vault" />
+
+                    <label
+                        >Save To Vault (With out vault, go through a simple ACDC
+                        process. 如果不勾选的话就是标准ACDC流程)</label
+                    >
+                </div>
+                <br />
+                <div class="ui checkbox">
+                    <input type="checkbox" id="with3DS" name="with3DS" />
+
+                    <label>with 3DS</label>
+                </div>
+
+                <!-- ################################################################## -->
+                <!-- 如果要使用SPB付款, 请使用 checkout_PayPal.ejs 和 checkout_PayPal.js中的内容
+                    <div>
+                        <input type="checkbox" id="usePayPal" name="usePayPal" />
+                        Use PayPal Button To Pay
+                    </div> -->
+                <!-- ################################################################## -->
+
+                <br />
+                <button
+                    id="multi-card-field-button"
+                    type="button"
+                    class="ui primary button"
+                >
+                    Pay now with Card
+                </button>
+                <br />
+            </div>
+        </div>
+
+        <%- include('./miniPart/result_area')%>
+
+            <% if (VAULT_MODEL === "firstTime") { %>
+                <%- include('./miniPart/first_time_result')%>
+            <% } %>
+
+        <script
+            src="https://www.paypal.com/sdk/js?components=buttons,card-fields&client-id=<%= clientId %>&currency=USD"
+            data-user-id-token="<%= id_token %>"
+        ></script>
+        <script type="module" src="checkout_ACDC.js"></script>
+    </body>
+</html>
