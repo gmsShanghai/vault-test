@@ -1,8 +1,8 @@
 {
   "3rdParty": {
     "merchantID": "CMHAMMNAXCMGA",
-    "customerID": "XmSnxMTBmb",
-    "vaultID": "5y418999dj5248428"
+    "customerID": "",
+    "vaultID": ""
   },
   "1stParty": {
     "merchantID": "",
@@ -11,9 +11,9 @@
   },
   "merchantID": "CMHAMMNAXCMGA",
   "currentPageVaultSaveParams": {
-    "is_use_PAYPAL_AUTH_ASSERTION": true,
+    "is_use_PAYPAL_AUTH_ASSERTION": false,
     "VAULT_MODEL": "firstTime",
-    "isVaultSave": true,
+    "isVaultSave": "",
     "isCard": true
   }
 }
