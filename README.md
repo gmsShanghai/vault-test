@@ -1,3 +1,16 @@
+Github Repo 地址:
+> https://github.com/gmsShanghai/vault-test
+
+--- 
+## 2024-04-10 更新说明
+在首页默认是3rd Party 模式了, 现在每一个页面的customerID都可以输入
+
+
+## 2024-04-07 更新说明
+BrainTree 测试卡号地址:
+> https://developer.paypal.com/braintree/docs/guides/3d-secure/testing-go-live/ruby
+
+
 ## 2024-04-02 更新说明
 
 1. 项目构成

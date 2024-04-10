@@ -147,29 +147,11 @@
             CUSTOMER_ID_INPUT.disabled = false;
             CUSTOMER_ID_INPUT.value = "";
         }
+
+        //2024-04-10  customer ID 永远可以输入了
+        CUSTOMER_ID_INPUT.disabled = false;
+
     })();
 
-    // const VAULT_ID = document
-    //     .getElementById("VAULT_INFO")
-    //     .getAttribute("VAULT_ID");
-    // const VAULT_MODEL = document
-    //     .getElementById("VAULT_INFO")
-    //     .getAttribute("VAULT_MODEL");
-    // let url = window.location.href;
-    // url = url.substring(0, url.lastIndexOf("/"));
-
-    // // const vault_info_object = await fetch(`${url}/card_vault_info`).then(data=>data.json());
-
-    // if (VAULT_MODEL === "firstTime") {
-    //     useVaultCheckBox.checked = false;
-    //     vaultIDInputBox.value = "";
-    // }
-    // if (VAULT_MODEL === "returning") {
-    //     vaultIDInputBox.value = VAULT_ID;
-    //     useVaultCheckBox.checked = true;
-    // }
-
-    // const amount_input = document.getElementById("amount_input");
-    // let amount = 100 + Math.floor(Math.random() * 100);
-    // amount_input.value = amount;
+   
 </script>
