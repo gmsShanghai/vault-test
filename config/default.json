@@ -4,21 +4,14 @@
             "vault_info": {
                 "PayPal": {
                     "petro_test": {
-                        // "direct": {
-                        //     "customer_id": "oVpDKxISXe",
-                        //     "vault_id": "2s866151xu6738947"
-                        // }
-
+                      
                         "direct": {
                             "customer_id": "LbmsFEnanC",
                             "vault_id": "36s83413kl1211321"
                         }
-                        // ,"3rdParty": {
-                        //     "customer_id": "oVpDKxISXe",
-                        //     "vault_id": "2s866151xu6738947"
-                        // }
-                        
-                        ,"3rdParty": {
+                       
+                        ,
+                        "3rdParty": {
                             "customer_id": "aVXDDGGdgE",
                             "vault_id": "1xm54586wc4361646"
                         }
@@ -66,12 +59,23 @@
                         "pwd": "Qq111222333"
                     }
                 },
-                "firstParty":{
-                    "US":{
-                        "email-address":"vault-first-party-merchant@cctest.com",
-                        "login-password":"Qq111222333",
-                        "clientID":"AUg7J8a_Q3JNzSOMucYdUzXt_UGQBXXtVIQlkd8zhUNcm0NfSCa5oyZu-tXvSlTLOzkIhYWD1TRaCe2C",
-                        "secret":"EGo7Qcp8xuEv1clleZn9JF3EcNUXrKt9WvIrJMMVkGKS-wkyQKdaHjZ2O0CeFHOWvqSruxI-FMXpEtUz"
+                "firstParty": {
+                    "US": {
+                        "email-address": "vault-first-party-merchant@cctest.com",
+                        "login-password": "Qq111222333",
+                        "clientID": "AUg7J8a_Q3JNzSOMucYdUzXt_UGQBXXtVIQlkd8zhUNcm0NfSCa5oyZu-tXvSlTLOzkIhYWD1TRaCe2C",
+                        "secret": "EGo7Qcp8xuEv1clleZn9JF3EcNUXrKt9WvIrJMMVkGKS-wkyQKdaHjZ2O0CeFHOWvqSruxI-FMXpEtUz"
+                    },
+                    "C2": {
+                        "email-address": "vault-test-merchant-c2@cctest.com",
+                        "login-password": "Qq111222333",
+                        "clientID": "AfT9T73YOOVSPXNJb8pd9E4WkuwFl1NDM5naClS9HwORvc7mlppOzVHMqzSMAo3oZ7-zyqLgo5SbHPV2",
+                        "secret": "ECFSfdTPHh5qezz-5nTWYSNTtmIxke64jVJkDZINSYVNCp0zOkZ2tQAKDQlQ8WYwm9iHwQ13jrQPHUiQ"
+                    },
+                    "C2-Official": {
+                        
+                        "clientID": "ATorZMIJrWsnLfLmzmfdOGA4AzRv_7ZGW4uHyva9Y0v7A1UcmvL18evdvZqrdc1wiuEeIenyiJvEEUZR",
+                        "secret": "EB32KNIh4AfVBMgsAiRaPUmI7_p11h3TCdau4K9b-CdwecEPhU5W13H2MCZsX6-fUr6A1U0mAeW5mALH"
                     }
                 },
                 "merchantAccounts": {
@@ -80,11 +84,11 @@
                         "payeeID": "CMHAMMNAXCMGA"
                     }
                 },
-                "vault-test-account":[
+                "vault-test-account": [
                     {
-                        "buyer":{
-                            "email-address":"vault-test-buyer@cctest.com",
-                            "secret":"Qq111222333"
+                        "buyer": {
+                            "email-address": "vault-test-buyer@cctest.com",
+                            "secret": "Qq111222333"
                         }
                     }
                 ]
@@ -144,11 +148,11 @@
     "USE_API_VAULT": {
         "card": {
             "Setup_token_for_card": "{\"payment_source\":{\"card\":{\"number\":\"4000000000001091\",\"expiry\":\"2025-12\",\"name\":\"Firstname Lastname\",\"billing_address\":{\"address_line_1\":\"2211 N First Street\",\"address_line_2\":\"17.3.160\",\"admin_area_1\":\"CA\",\"admin_area_2\":\"San Jose\",\"postal_code\":\"95131\",\"country_code\":\"US\"},\"experience_context\":{\"brand_name\":\"YourBrandName\",\"locale\":\"en-US\",\"return_url\":\"https://example.com/returnUrl\",\"cancel_url\":\"https://example.com/cancelUrl\"}}}}",
-            "Create_payment_token_for_card":"{\"payment_source\":{\"token\":{\"id\":\"572189484X6583044\",\"type\":\"SETUP_TOKEN\"}}}",
-            "Make_payment_for_card":"{\"intent\":\"CAPTURE\",\"purchase_units\":[{\"amount\":{\"currency_code\":\"USD\",\"value\":\"100.00\"}}],\"payment_source\":{\"card\":{\"vault_id\":\"dnbbj3g\"}}}"
+            "Create_payment_token_for_card": "{\"payment_source\":{\"token\":{\"id\":\"572189484X6583044\",\"type\":\"SETUP_TOKEN\"}}}",
+            "Make_payment_for_card": "{\"intent\":\"CAPTURE\",\"purchase_units\":[{\"amount\":{\"currency_code\":\"USD\",\"value\":\"100.00\"}}],\"payment_source\":{\"card\":{\"vault_id\":\"dnbbj3g\"}}}"
         },
-        "paypal":{
-            "Setup_token":"{\"payment_source\":{\"paypal\":{\"description\":\"DescriptionforPayPaltobeshowntoPayPalpayer\",\"shipping\":{\"name\":{\"full_name\":\"FirstnameLastname\"},\"address\":{\"address_line_1\":\"2211NFirstStreet\",\"address_line_2\":\"Building17\",\"admin_area_2\":\"SanJose\",\"admin_area_1\":\"CA\",\"postal_code\":\"95131\",\"country_code\":\"US\"}},\"permit_multiple_payment_tokens\":false,\"usage_pattern\":\"IMMEDIATE\",\"usage_type\":\"MERCHANT\",\"customer_type\":\"CONSUMER\",\"experience_context\":{\"shipping_preference\":\"SET_PROVIDED_ADDRESS\",\"payment_method_preference\":\"IMMEDIATE_PAYMENT_REQUIRED\",\"brand_name\":\"EXAMPLEINC\",\"locale\":\"en-US\",\"return_url\":\"https://example.com/returnUrl\",\"cancel_url\":\"https://example.com/cancelUrl\"}}}}"
+        "paypal": {
+            "Setup_token": "{\"payment_source\":{\"paypal\":{\"description\":\"DescriptionforPayPaltobeshowntoPayPalpayer\",\"shipping\":{\"name\":{\"full_name\":\"FirstnameLastname\"},\"address\":{\"address_line_1\":\"2211NFirstStreet\",\"address_line_2\":\"Building17\",\"admin_area_2\":\"SanJose\",\"admin_area_1\":\"CA\",\"postal_code\":\"95131\",\"country_code\":\"US\"}},\"permit_multiple_payment_tokens\":false,\"usage_pattern\":\"IMMEDIATE\",\"usage_type\":\"MERCHANT\",\"customer_type\":\"CONSUMER\",\"experience_context\":{\"shipping_preference\":\"SET_PROVIDED_ADDRESS\",\"payment_method_preference\":\"IMMEDIATE_PAYMENT_REQUIRED\",\"brand_name\":\"EXAMPLEINC\",\"locale\":\"en-US\",\"return_url\":\"https://example.com/returnUrl\",\"cancel_url\":\"https://example.com/cancelUrl\"}}}}"
         }
     }
 }

@@ -6,7 +6,7 @@ import {
 } from "../../api.js";
 import config from "config";
 import _ from "lodash";
-import { readDB,updateDB } from "../../../data/db.js";
+import { readDB, updateDB } from "../../../data/db.js";
 
 const PAYPAL_TEST_CARD_NO = config.get("testCard.PAYPAL_TEST_CARD_NO");
 const PAYPAL_TEST_CARD_DATE = config.get("testCard.PAYPAL_TEST_CARD_DATE");
@@ -18,36 +18,46 @@ async function dbStoreVault(
     isVaultSave = false,
     isCard = false
 ) {
-    console.log("[CommonPageRenderFunction.dbStoreVault]Start")
-    console.log("is_use_PAYPAL_AUTH_ASSERTION:",is_use_PAYPAL_AUTH_ASSERTION)
-    console.log("vault_model:",vault_model)
-    console.log("isVaultSave:",isVaultSave)
-    console.log("isCard:",isCard)
+    console.log("[CommonPageRenderFunction.dbStoreVault]Start");
+    const data = await readDB();
+    consoleLogDB(data);
 
-    await updateDB("currentPageVaultSaveParams.is_use_PAYPAL_AUTH_ASSERTION",eval(is_use_PAYPAL_AUTH_ASSERTION));
+    console.log("is_use_PAYPAL_AUTH_ASSERTION:", is_use_PAYPAL_AUTH_ASSERTION);
+    console.log("vault_model:", vault_model);
+    console.log("isVaultSave:", isVaultSave);
+    console.log("isCard:", isCard);
 
-    await updateDB("currentPageVaultSaveParams.VAULT_MODEL",vault_model);
-    
-    isVaultSave && await updateDB("currentPageVaultSaveParams.isVaultSave",isVaultSave);
+    await updateDB(
+        "currentPageVaultSaveParams.is_use_PAYPAL_AUTH_ASSERTION",
+        eval(is_use_PAYPAL_AUTH_ASSERTION)
+    );
 
-    isCard && await updateDB("currentPageVaultSaveParams.isCard",isCard);
-    console.log("[CommonPageRenderFunction.dbStoreVault]End")
+    await updateDB("currentPageVaultSaveParams.VAULT_MODEL", vault_model);
+
+    isVaultSave &&
+        (await updateDB("currentPageVaultSaveParams.isVaultSave", isVaultSave));
+
+    isCard && (await updateDB("currentPageVaultSaveParams.isCard", isCard));
+    console.log("[CommonPageRenderFunction.dbStoreVault]End");
 }
 
 async function dbStoreVaultACDC(isVaultSave, isCard) {
-    await updateDB("currentPageVaultSaveParams.isVaultSave",isVaultSave);
-    await updateDB("currentPageVaultSaveParams.isCard",isCard);
-   
+    await updateDB("currentPageVaultSaveParams.isVaultSave", isVaultSave);
+    await updateDB("currentPageVaultSaveParams.isCard", isCard);
+}
+
+function consoleLogDB(data) {
+    console.log("读取DB:", JSON.stringify(data, null, "  "));
 }
 
 async function getJsSDKEjsRenderParam(
     vault_model,
     is_use_PAYPAL_AUTH_ASSERTION
 ) {
-    const data = await readDB();    
+    const data = await readDB();
+    consoleLogDB(data);
 
     let TEST_MERCHANT_ID = _.get(data, "3rdParty.merchantID");
-
     let PAYPAL_CLIENT_ID;
     let PAYPAL_CLIENT_SECRET;
 
@@ -74,11 +84,28 @@ async function getJsSDKEjsRenderParam(
         //     "env.sandbox.EUTeam.thirdParty.DE.secret"
         // );
     } else {
+        //US的first party
+        // PAYPAL_CLIENT_ID = config.get(
+        //     "env.sandbox.myApp.firstParty.US.clientID"
+        // );
+        // PAYPAL_CLIENT_SECRET = config.get(
+        //     "env.sandbox.myApp.firstParty.US.secret"
+        // );
+
+        //C2的first party
+        // PAYPAL_CLIENT_ID = config.get(
+        //     "env.sandbox.myApp.firstParty.C2.clientID"
+        // );
+        // PAYPAL_CLIENT_SECRET = config.get(
+        //     "env.sandbox.myApp.firstParty.C2.secret"
+        // );
+
+        //C2的first party
         PAYPAL_CLIENT_ID = config.get(
-            "env.sandbox.myApp.firstParty.US.clientID"
+            "env.sandbox.myApp.firstParty.C2-Official.clientID"
         );
         PAYPAL_CLIENT_SECRET = config.get(
-            "env.sandbox.myApp.firstParty.US.secret"
+            "env.sandbox.myApp.firstParty.C2-Official.secret"
         );
     }
 

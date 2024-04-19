@@ -21,17 +21,17 @@ const TEST_MERCHANT_ID = document
 const createOrderRequest = () => {
     const isVault = document.querySelector("#save_2_vault").checked;
     const isWith3DS = document.querySelector("#with3DS").checked;
-    fetch("/api/orders", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
+    // fetch("/api/orders", {
+    //     method: "POST",
+    //     headers: {
+    //         "Content-Type": "application/json",
+    //     },
 
-        body: JSON.stringify({
-            isCard: true,
-            isVault: isVault,
-        }),
-    });
+    //     body: JSON.stringify({
+    //         isCard: true,
+    //         isVault: isVault,
+    //     }),
+    // });
 
     const order_amount = document.getElementById("amount_input").value;
 
