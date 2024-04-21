@@ -61,53 +61,26 @@ async function getJsSDKEjsRenderParam(
     let PAYPAL_CLIENT_ID;
     let PAYPAL_CLIENT_SECRET;
 
+    // const clientIDs = config.get("env.sandbox.myApp");
+    // console.log("clientIDs", clientIDs);
     if (eval(is_use_PAYPAL_AUTH_ASSERTION)) {
-        //自用3rd Party US Old
-        // PAYPAL_CLIENT_ID = config.get(
-        //     "env.sandbox.myApp.thirdParty.US_Old.clientID"
-        // );
-        // PAYPAL_CLIENT_SECRET = config.get(
-        //     "env.sandbox.myApp.thirdParty.US_Old.secret"
-        // );
+        const AppNameTag = _.get(data, "appInfo.3rdParty.tagName");
+        console.log("AppNameTag:", AppNameTag);
+        const targetClientID = clientIDs["thirdParty"][AppNameTag];
 
-        //自用3rd Party US New
-        PAYPAL_CLIENT_ID = config.get(
-            "env.sandbox.myApp.thirdParty.US_New.clientID"
-        );
-        PAYPAL_CLIENT_SECRET = config.get(
-            "env.sandbox.myApp.thirdParty.US_New.secret"
-        );
-
-        //EU 德国
-        // PAYPAL_CLIENT_ID = config.get("env.sandbox.EUTeam.thirdParty.DE.clientID");
-        // PAYPAL_CLIENT_SECRET = config.get(
-        //     "env.sandbox.EUTeam.thirdParty.DE.secret"
-        // );
+        PAYPAL_CLIENT_ID = _.get(targetClientID, "clientID");
+        PAYPAL_CLIENT_SECRET = _.get(targetClientID, "secret");
     } else {
-        //US的first party
-        // PAYPAL_CLIENT_ID = config.get(
-        //     "env.sandbox.myApp.firstParty.US.clientID"
-        // );
-        // PAYPAL_CLIENT_SECRET = config.get(
-        //     "env.sandbox.myApp.firstParty.US.secret"
-        // );
+        const AppNameTag = _.get(data, "appInfo.1stParty.tagName");
 
-        //C2的first party
-        // PAYPAL_CLIENT_ID = config.get(
-        //     "env.sandbox.myApp.firstParty.C2.clientID"
-        // );
-        // PAYPAL_CLIENT_SECRET = config.get(
-        //     "env.sandbox.myApp.firstParty.C2.secret"
-        // );
+        const targetClientID = clientIDs["firstParty"][AppNameTag];
 
-        //C2的first party
-        PAYPAL_CLIENT_ID = config.get(
-            "env.sandbox.myApp.firstParty.C2-Official.clientID"
-        );
-        PAYPAL_CLIENT_SECRET = config.get(
-            "env.sandbox.myApp.firstParty.C2-Official.secret"
-        );
+        PAYPAL_CLIENT_ID = _.get(targetClientID, "clientID");
+        PAYPAL_CLIENT_SECRET = _.get(targetClientID, "secret");
     }
+
+    console.log("PAYPAL_CLIENT_ID:", PAYPAL_CLIENT_ID);
+    console.log("PAYPAL_CLIENT_SECRET:", PAYPAL_CLIENT_SECRET);
 
     initClientIDSecret(
         PAYPAL_CLIENT_ID,

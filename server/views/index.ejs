@@ -1,5 +1,9 @@
 <html>
     <head>
+        <META HTTP-EQUIV="Pragma" CONTENT="no-cache" />
+        <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache" />
+        <META HTTP-EQUIV="Expires" CONTENT="0" />
+
         <title>Processor Testing</title>
         <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
         <link
@@ -50,7 +54,11 @@
             <div class="ui attached segment">
                 <div class="header item">
                     <div class="ui checkbox">
-                        <input type="checkbox" id="use_PayPal_Auth_Assertion" checked="true"/>
+                        <input
+                            type="checkbox"
+                            id="use_PayPal_Auth_Assertion"
+                            checked="true"
+                        />
                         <label> With PayPal Auth Assertion In Head </label>
                     </div>
                 </div>
@@ -113,21 +121,31 @@
                         In [API Vault] case, First Time and Returning are the
                         same
                     </a>
-                   
                 </div>
             </div>
         </div>
 
-        <%- include("./miniPart/clientID_display_panel.ejs") %>
+        <%- include("./miniPart/clientID_display_panel.ejs",{ clientIDConfigs })
+        %>
 
         <div class="ui container segment">
             踩坑注意: (补充中...)
             <div class="ui segment">
-                1. remiks上ACDC的文档是v1的,不是v2的, vault的文档也是v2的不是v3的 <br/>
-                2. online doc上3rd party关于vault的文档是v2的, 不是v3的, 但是1st party的文档是正确的. vault v2与v3 src标签中的 "data-user-id-token"的叫法不一样, v2中叫"data-client-token", token的生成函数也不同<br/>
-                3. 在所有的sdk vault的场景中, 有且只有ACDC+vault without purchase这个场景中是不需要"data-user-id-token"的, 其他的都是需要的<br/>
-                4. 不是所有的测试card suit都可以完成ACDC的测试, PayPal页面中的测试卡生成页面的都不可以, BrainTree的测试卡的测试卡信息可以, 这可能是由于vault是基于BT来做的<br/>
-                5. 3rd Party的call必须使用Auth-assertion而不能使用在request body中指明payee的方式.
+                1. remiks上ACDC的文档是v1的,不是v2的,
+                vault的文档也是v2的不是v3的 <br />
+                2. online doc上3rd party关于vault的文档是v2的, 不是v3的, 但是1st
+                party的文档是正确的. vault v2与v3 src标签中的
+                "data-user-id-token"的叫法不一样, v2中叫"data-client-token",
+                token的生成函数也不同<br />
+                3. 在所有的sdk vault的场景中, 有且只有ACDC+vault without
+                purchase这个场景中是不需要"data-user-id-token"的,
+                其他的都是需要的<br />
+                4. 不是所有的测试card suit都可以完成ACDC的测试,
+                PayPal页面中的测试卡生成页面的都不可以,
+                BrainTree的测试卡的测试卡信息可以,
+                这可能是由于vault是基于BT来做的<br />
+                5. 3rd Party的call必须使用Auth-assertion而不能使用在request
+                body中指明payee的方式.
             </div>
         </div>
     </body>
@@ -148,6 +166,28 @@
                 "use_PayPal_Auth_Assertion"
             ).checked;
 
+            if (is_use_PAYPAL_AUTH_ASSERTION) {
+                const thirdPartyChecked = document.getElementById(
+                    "thirdPartyClientIDsSelect"
+                ).value;
+
+                if (!thirdPartyChecked){
+                    window.alert("Please Choose Client Information!")
+                    return;
+                }
+                // debugger;
+            } else {
+                const firstPartyChecked = document.getElementById(
+                    "firstPartyClientIDsSelect"
+                ).value;
+
+                if (!firstPartyChecked){
+                    window.alert("Please Choose Client Information!")
+                    return;
+                } 
+            }
+
+            // return;
             window.open(
                 `${window.location.href}${route}?model=${currentModel}&is_use_PAYPAL_AUTH_ASSERTION=${is_use_PAYPAL_AUTH_ASSERTION}&route=${route}`
             );

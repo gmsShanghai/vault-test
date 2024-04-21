@@ -8,7 +8,7 @@ import vaultAPI from "./routes/vault/vaultAPI.js";
 import pageVaultWithAPI from "./routes/page/vault_with_api.js";
 import pageVaultWithOutPurchase from "./routes/page/vault_without_purchase.js";
 import pageVaultWithPurchase from "./routes/page/vault_with_purchase.js";
-import { createLowDBinstance } from "../data/db.js";
+import { createLowDBinstance, readDB,updateDB } from "../data/db.js";
 
 //Init Database
 createLowDBinstance();
@@ -34,9 +34,55 @@ app.use("", pageVaultWithAPI);
 app.use("", pageVaultWithOutPurchase);
 app.use("", pageVaultWithPurchase);
 
+function printObjectToTerminal(object) {
+    console.log("\r\n", JSON.stringify(object, null, "  "));
+}
 app.get("/", async (req, res) => {
     try {
-        res.render("index");
+        const data = await readDB();
+
+        const clientIDs = config.get("env.sandbox.myApp");
+        // printObjectToTerminal(clientIDs);
+        const thirdPartyClientIDs = Object.keys(clientIDs.thirdParty).map(
+            (thirdPartyClientName) => {
+                // console.log("thirdPartyClientName:", thirdPartyClientName);
+                return {
+                    AppNameTag: thirdPartyClientName,
+                    clientID:
+                        clientIDs["thirdParty"][thirdPartyClientName][
+                            "clientID"
+                        ],
+                    secret: clientIDs["thirdParty"][thirdPartyClientName][
+                        "secret"
+                    ],
+                };
+            }
+        );
+        // printObjectToTerminal(thirdPartyClientIDs);
+
+        const firstPartyClientIDs = Object.keys(clientIDs["firstParty"]).map(
+            (firstPartyClientName) => {
+                return {
+                    AppNameTag: firstPartyClientName,
+                    clientID:
+                        clientIDs["firstParty"][firstPartyClientName][
+                            "clientID"
+                        ],
+                    secret: clientIDs["firstParty"][firstPartyClientName][
+                        "secret"
+                    ],
+                };
+            }
+        );
+
+        // printObjectToTerminal(firstPartyClientIDs);
+
+        res.render("index", {
+            clientIDConfigs: {
+                thirdPartyClientIDs,
+                firstPartyClientIDs,
+            },
+        });
     } catch (err) {
         res.status(500).send(err.message);
     }
@@ -49,6 +95,19 @@ app.get("/card_vault_info", async (req, res) => {
     console.log("CARD_VAULT_INFO:", CARD_VAULT_INFO);
     res.send(CARD_VAULT_INFO);
 });
+
+app.post("/write_client_credentials",async (req, res) => {
+    const {isThirdParty, AppNameTag} = req.body;     
+    const data = await readDB();
+    printObjectToTerminal(data);
+    printObjectToTerminal(isThirdParty);
+    printObjectToTerminal(AppNameTag);
+    if(eval(isThirdParty)){
+        await updateDB("appInfo.3rdParty.tagName", AppNameTag);
+    }else{
+        await updateDB("appInfo.1stParty.tagName", AppNameTag);
+    }
+})
 
 app.listen(PORT, () => {
     console.log(`Node server listening at http://localhost:${PORT}/`);

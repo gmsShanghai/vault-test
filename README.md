@@ -1,6 +1,18 @@
 Github Repo 地址:
 > https://github.com/gmsShanghai/vault-test
 
+---
+## 2024-04-21 更新说明
+更新了APP的选择功能.
+具体操作方法如下, 现在主页中会显示在`config`文件中添加的APP配置.
+![pic](./readmePic/013.png)
+选中后相关的信息会回写出来方便查看.
+![pic](./readmePic/014.png)
+如何添加自己创建的APP信息(以1st Party为例)
+![pic](./readmePic/015.png)
+刷新后即可显示新添加的配置项
+![pic](./readmePic/016.png)
+
 --- 
 ## 2024-04-10 更新说明
 在首页默认是3rd Party 模式了, 现在每一个页面的customerID都可以输入

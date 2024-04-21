@@ -2,12 +2,26 @@
     <div class="ui container segment">
         <div>
             <table class="ui padded table">
+                <div class="ui center aligned basic segment">
+                    <p style="display: inline-block">
+                        3rd Party Client information
+                    </p>
+
+                   
+                    <select class="ui dropdown" id="thirdPartyClientIDsSelect">
+                        <option value="" selected>Please Choose</option>
+                        <% for(var i=0; i<clientIDConfigs.thirdPartyClientIDs.length; i++) {%>
+                            <option value=<%- `${clientIDConfigs.thirdPartyClientIDs[i]["clientID"]}|${clientIDConfigs.thirdPartyClientIDs[i]["secret"]}|${clientIDConfigs.thirdPartyClientIDs[i]["AppNameTag"]}`%>><%= clientIDConfigs.thirdPartyClientIDs[i]["AppNameTag"] %></option>
+                         <% } %>
+
+                    </select>
+                </div>
+
                 <tbody>
                     <thead>
                         <tr>
-                            <th colspan="2">3rd party information</th>
+                            <th colspan="2">3rd party information  (Display function Only)</th>
                         </tr>
-                       
                     </thead>
                     <tr>
                         <td style="width: 12rem">当前ClientID:</td>
@@ -19,7 +33,7 @@
                                 <input
                                     type="text"
                                     placeholder="3rd party Client ID"
-                                    id="client_id"
+                                    id="3rd_client_id"
                                 />
                             </div>
                         </td>
@@ -34,7 +48,7 @@
                                 <input
                                     type="text"
                                     placeholder="3rd party Secret key"
-                                    id="secret_key"
+                                    id="3rd_secret_key"
                                 />
                             </div>
                         </td>
@@ -56,14 +70,31 @@
                     </tr>
                 </tbody>
             </table>
+            
+               
+            </div>
 
+            <!-- <%= clientIDConfigs.firstPartyClientIDs.length %> -->
+           
             <table class="ui padded table">
+                <div class="ui center aligned basic segment">
+                    <p style="display: inline-block">
+                        1st Party Client information
+                    </p>
+                    
+               
+                        <select class="ui dropdown" id="firstPartyClientIDsSelect">
+                            <option value="" selected>Please Choose</option>
+                            <% for(var i=0; i<clientIDConfigs.firstPartyClientIDs.length; i++) {%>
+                                <option value=<%= `${clientIDConfigs.firstPartyClientIDs[i]["clientID"]}|${clientIDConfigs.firstPartyClientIDs[i]["secret"]}|${clientIDConfigs.firstPartyClientIDs[i]["AppNameTag"]}` %>><%= clientIDConfigs.firstPartyClientIDs[i]["AppNameTag"] %></option>
+                             <% } %>
+                        </select>    
+                  
                 <tbody>
                     <thead>
                         <tr>
-                            <th colspan="2">1st party information</th>
+                            <th colspan="2">1st party information (Display function Only)</th>
                         </tr>
-                       
                     </thead>
                     <tr>
                         <td style="width: 12rem">当前ClientID:</td>
@@ -75,7 +106,7 @@
                                 <input
                                     type="text"
                                     placeholder="1st party Client ID"
-                                    id="client_id"
+                                    id="1st_client_id"
                                 />
                             </div>
                         </td>
@@ -90,14 +121,73 @@
                                 <input
                                     type="text"
                                     placeholder="1st party Secret key"
-                                    id="secret_key"
+                                    id="1st_secret_key"
                                 />
                             </div>
                         </td>
                     </tr>
-                    
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+
+<script>
+    const thirdPartyClientIDsSelect = document.getElementById("thirdPartyClientIDsSelect");
+    const firstPartyClientIDsSelect = document.getElementById("firstPartyClientIDsSelect");
+    thirdPartyClientIDsSelect.selectedIndex=0 
+    firstPartyClientIDsSelect.selectedIndex=0 
+    document.getElementById("3rd_client_id").value="";
+    document.getElementById("3rd_secret_key").value="";
+    document.getElementById("1st_client_id").value="";
+    document.getElementById("1st_secret_key").value="";
+
+    thirdPartyClientIDsSelect.addEventListener("change",(event)=>{
+        const value = event.target.value;
+        const [clientID,secret,AppNameTag ] = value.split("|")
+        // debugger;
+        // console.log("clientID:",clientID)
+        // console.log("secret:",secret)
+       const currentClientID =  document.getElementById("3rd_client_id");
+       currentClientID.value = clientID;
+       const currentSecret =  document.getElementById("3rd_secret_key");
+       currentSecret.value = secret
+    //    debugger;
+    
+       fetch("/write_client_credentials",{ method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+
+            body: JSON.stringify({
+               isThirdParty: true,
+               AppNameTag:AppNameTag
+            })
+
+       })
+    })
+
+    firstPartyClientIDsSelect.addEventListener("change",(event)=>{
+        const value = event.target.value;
+        const [clientID,secret,AppNameTag ] = value.split("|")
+        // debugger;
+        // console.log("clientID:",clientID)
+        // console.log("secret:",secret)
+       const currentClientID =  document.getElementById("1st_client_id");
+       currentClientID.value = clientID;
+       const currentSecret =  document.getElementById("1st_secret_key");
+       currentSecret.value = secret
+
+       fetch("/write_client_credentials",{ method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+
+            body: JSON.stringify({
+               isThirdParty: false,
+               AppNameTag:AppNameTag
+            })
+
+       })
+    })
+</script>

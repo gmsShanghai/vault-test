@@ -11,9 +11,17 @@
   },
   "merchantID": "CMHAMMNAXCMGA",
   "currentPageVaultSaveParams": {
-    "is_use_PAYPAL_AUTH_ASSERTION": false,
+    "is_use_PAYPAL_AUTH_ASSERTION": true,
     "VAULT_MODEL": "firstTime",
     "isVaultSave": true,
     "isCard": true
+  },
+  "appInfo": {
+    "3rdParty": {
+      "tagName": "US_Old"
+    },
+    "1stParty": {
+      "tagName": "新添加的"
+    }
   }
 }

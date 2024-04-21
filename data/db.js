@@ -29,7 +29,15 @@ const createLowDBinstance = () => {
             is_use_PAYPAL_AUTH_ASSERTION: "",
             VAULT_MODEL: "",
             isVaultSave: "",
-            isCard:""
+            isCard: "",
+        },
+        appInfo: {
+            "3rdParty": {
+                tagName: "",
+            },
+            "1stParty": {
+                tagName: "",
+            },
         },
     };
     const adapter = new JSONFile(file);
@@ -48,8 +56,4 @@ const readDB = async () => {
     return data;
 };
 
-export {
-  createLowDBinstance,
-  updateDB,
-  readDB
-};
+export { createLowDBinstance, updateDB, readDB };
