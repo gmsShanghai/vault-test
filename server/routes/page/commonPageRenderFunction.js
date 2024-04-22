@@ -61,7 +61,7 @@ async function getJsSDKEjsRenderParam(
     let PAYPAL_CLIENT_ID;
     let PAYPAL_CLIENT_SECRET;
 
-    // const clientIDs = config.get("env.sandbox.myApp");
+    const clientIDs = config.get("env.sandbox.myApp");
     // console.log("clientIDs", clientIDs);
     if (eval(is_use_PAYPAL_AUTH_ASSERTION)) {
         const AppNameTag = _.get(data, "appInfo.3rdParty.tagName");
