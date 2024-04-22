@@ -65,13 +65,17 @@ router.get("/save_purchase_later_create_payment_token", async (req, res) => {
         "\n##############[server.js]##############\n##############[/save_purchase_later_create_payment_token]##############"
     );
     const token_id = req.query.token_id;
-    const { jsonResponse, httpStatusCode } = await createPaymentToken(token_id);
+    const jsonResponse = await createPaymentToken(token_id);
     console.log("request body:", JSON.stringify(jsonResponse, null, "  "));
 
     res.send(jsonResponse);
 });
 
 router.post("/dbStoreVaultACDC", async (req, res) => {
+    console.log(
+        "\x1B[44m%s\x1B[0m",
+        "\n##############[server.js]##############\n##############[/dbStoreVaultACDC]##############"
+    );
     const body = req.body;
     const isVaultSave = body.isVault;
     const isCard = body.isCard;

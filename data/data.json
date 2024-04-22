@@ -6,13 +6,13 @@
   },
   "1stParty": {
     "merchantID": "",
-    "customerID": "aGBLWjjOQH",
-    "vaultID": "2ah621534y7386142"
+    "customerID": "TsAMtYkZOO",
+    "vaultID": "5r710059sr6511700"
   },
   "merchantID": "CMHAMMNAXCMGA",
   "currentPageVaultSaveParams": {
     "is_use_PAYPAL_AUTH_ASSERTION": false,
-    "VAULT_MODEL": "firstTime",
+    "VAULT_MODEL": "returning",
     "isVaultSave": true,
     "isCard": true
   },
@@ -21,7 +21,7 @@
       "tagName": "US_Old"
     },
     "1stParty": {
-      "tagName": "C2"
+      "tagName": "US"
     }
   }
 }

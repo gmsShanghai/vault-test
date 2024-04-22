@@ -1,5 +1,5 @@
 import fetch from "node-fetch";
-import { updateDB,readDB } from "../data/db.js";
+import { updateDB, readDB } from "../data/db.js";
 import _ from "lodash";
 
 const base = "https://api.sandbox.paypal.com";
@@ -318,7 +318,9 @@ const createPaymentToken = async (token_id) => {
         body: JSON.stringify(payload),
     });
 
-    return handleResponse(response);
+    const { jsonResponse, httpStatusCode } = await handleResponse(response);
+    await dbSaveVaultInfo(jsonResponse);
+    return jsonResponse;
 };
 
 /**
@@ -429,7 +431,7 @@ const captureOrder = async (orderID) => {
 };
 
 async function dbSaveVaultInfo(jsonResponse) {
-    console.log("[api,js]dbSaveVaultInfo")
+    console.log("[api,js]dbSaveVaultInfo");
     const dbData = await readDB();
     const { is_use_PAYPAL_AUTH_ASSERTION, VAULT_MODEL, isVaultSave, isCard } =
         dbData.currentPageVaultSaveParams;
@@ -443,6 +445,11 @@ async function dbSaveVaultInfo(jsonResponse) {
     let last_digits;
     let expiry;
     let brand;
+
+    console.log("jsonResponse:", jsonResponse);
+    console.log("eval(isCard):", eval(isCard));
+
+    //Save vault with Purchase
     if (eval(isCard)) {
         last_digits = _.get(jsonResponse, "payment_source.card.last_digits");
         expiry = _.get(jsonResponse, "payment_source.card.expiry");
@@ -465,24 +472,35 @@ async function dbSaveVaultInfo(jsonResponse) {
             "payment_source.paypal.attributes.vault.customer.id"
         );
     }
-    console.log("[api.js][dbSaveVaultInfo]")
+    //Save vault without Purchase
+    const vaultWOPurchase = _.get(jsonResponse, "links[0].href");
+    console.log(vaultWOPurchase);
+    if (
+        _.get(jsonResponse, "links[0].href").includes(
+            ".paypal.com/v3/vault/payment-tokens/"
+        )
+    ) {
+        console.log("This is a Save vault without Purchase case!");
+        vaultID = _.get(jsonResponse, "id");
+        customerID = _.get(jsonResponse, "customer.id");
+    }
+
+    console.log("[api.js][dbSaveVaultInfo]");
     console.log("vaultID:", vaultID);
     console.log("customerID:", customerID);
-    console.log("is_use_PAYPAL_AUTH_ASSERTION:",is_use_PAYPAL_AUTH_ASSERTION)
+    console.log("is_use_PAYPAL_AUTH_ASSERTION:", is_use_PAYPAL_AUTH_ASSERTION);
     if (eval(is_use_PAYPAL_AUTH_ASSERTION)) {
         //3rd party
-        console.log("update 3rd party Vault info")
-        await updateDB("3rdParty.customerID",customerID);
-        await updateDB("3rdParty.vaultID",vaultID);
-       
+        console.log("update 3rd party Vault info");
+        await updateDB("3rdParty.customerID", customerID);
+        await updateDB("3rdParty.vaultID", vaultID);
     } else {
         //first party
-        console.log("update 1st party Vault info")
-        await updateDB("1stParty.customerID",customerID);
-        await updateDB("1stParty.vaultID",vaultID);
-       
+        console.log("update 1st party Vault info");
+        await updateDB("1stParty.customerID", customerID);
+        await updateDB("1stParty.vaultID", vaultID);
     }
-    console.log("[api.js][dbSaveVaultInfo]Save complete")
+    console.log("[api.js][dbSaveVaultInfo]Save complete");
 }
 
 async function handleResponse(response) {
@@ -512,7 +530,6 @@ export {
     createPaymentToken,
     createSetupTokenSaveCard,
 };
-
 
 // 这是commonJS的写法
 // module.exports = { createOrder, captureOrder };

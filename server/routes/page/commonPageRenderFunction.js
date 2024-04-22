@@ -37,7 +37,7 @@ async function dbStoreVault(
     isVaultSave &&
         (await updateDB("currentPageVaultSaveParams.isVaultSave", isVaultSave));
 
-    isCard && (await updateDB("currentPageVaultSaveParams.isCard", isCard));
+    await updateDB("currentPageVaultSaveParams.isCard", isCard);
     console.log("[CommonPageRenderFunction.dbStoreVault]End");
 }
 
@@ -63,6 +63,7 @@ async function getJsSDKEjsRenderParam(
 
     const clientIDs = config.get("env.sandbox.myApp");
     // console.log("clientIDs", clientIDs);
+
     if (eval(is_use_PAYPAL_AUTH_ASSERTION)) {
         const AppNameTag = _.get(data, "appInfo.3rdParty.tagName");
         console.log("AppNameTag:", AppNameTag);
