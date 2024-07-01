@@ -105,6 +105,7 @@ async function onApproveCallback(data, actions) {
             );
         }
     } catch (error) {
+        debugger;
         console.error(error);
         resultMessage(
             `Sorry, your transaction could not be processed...<br><br>${error}`,

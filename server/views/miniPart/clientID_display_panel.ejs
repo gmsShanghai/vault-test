@@ -34,12 +34,14 @@
                                     type="text"
                                     placeholder="3rd party Client ID"
                                     id="3rd_client_id"
+                                    disabled = "true"
                                 />
                             </div>
                         </td>
                     </tr>
                     <tr>
                         <td>当前SecretKey:</td>
+                       
                         <td>
                             <div
                                 class="ui input fluid"
@@ -49,6 +51,8 @@
                                     type="text"
                                     placeholder="3rd party Secret key"
                                     id="3rd_secret_key"
+                                    disabled = "true"
+                                 
                                 />
                             </div>
                         </td>
@@ -64,6 +68,8 @@
                                     type="text"
                                     placeholder="3rd party ISU Merchant ID"
                                     id="3rdPartyMerchantID"
+                                    disabled = "true"
+                                    initValue="<%= clientIDConfigs.TEST_MERCHANT_ID %>"
                                 />
                             </div>
                         </td>
@@ -107,6 +113,7 @@
                                     type="text"
                                     placeholder="1st party Client ID"
                                     id="1st_client_id"
+                                    disabled = "true"
                                 />
                             </div>
                         </td>
@@ -122,6 +129,7 @@
                                     type="text"
                                     placeholder="1st party Secret key"
                                     id="1st_secret_key"
+                                    disabled = "true"
                                 />
                             </div>
                         </td>
@@ -141,6 +149,10 @@
     document.getElementById("3rd_secret_key").value="";
     document.getElementById("1st_client_id").value="";
     document.getElementById("1st_secret_key").value="";
+
+    const thirdPartyMerchantID = document.getElementById("3rdPartyMerchantID");
+    thirdPartyMerchantID.value=thirdPartyMerchantID.getAttribute("initValue")
+    debugger;
 
     thirdPartyClientIDsSelect.addEventListener("change",(event)=>{
         const value = event.target.value;

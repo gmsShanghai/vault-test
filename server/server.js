@@ -10,6 +10,8 @@ import pageVaultWithOutPurchase from "./routes/page/vault_without_purchase.js";
 import pageVaultWithPurchase from "./routes/page/vault_with_purchase.js";
 import { createLowDBinstance, readDB,updateDB } from "../data/db.js";
 
+import _ from "lodash";
+
 //Init Database
 createLowDBinstance();
 
@@ -40,6 +42,10 @@ function printObjectToTerminal(object) {
 app.get("/", async (req, res) => {
     try {
         const data = await readDB();
+        let TEST_MERCHANT_ID = _.get(data, "3rdParty.merchantID");
+        printObjectToTerminal(data)
+        printObjectToTerminal(TEST_MERCHANT_ID)
+
 
         const clientIDs = config.get("env.sandbox.myApp");
         // printObjectToTerminal(clientIDs);
@@ -54,7 +60,7 @@ app.get("/", async (req, res) => {
                         ],
                     secret: clientIDs["thirdParty"][thirdPartyClientName][
                         "secret"
-                    ],
+                    ]
                 };
             }
         );
@@ -81,6 +87,7 @@ app.get("/", async (req, res) => {
             clientIDConfigs: {
                 thirdPartyClientIDs,
                 firstPartyClientIDs,
+                TEST_MERCHANT_ID
             },
         });
     } catch (err) {

@@ -24,7 +24,6 @@ const createLowDBinstance = () => {
             customerID: "",
             vaultID: "",
         },
-        merchantID: "CMHAMMNAXCMGA",
         currentPageVaultSaveParams: {
             is_use_PAYPAL_AUTH_ASSERTION: "",
             VAULT_MODEL: "",
